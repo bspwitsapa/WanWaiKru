@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>จัดการข้อมูลครู — Admin</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="admin.css">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+
+  <!-- Admin Header -->
+  <header class="admin-header">
+    <div class="admin-header-inner container">
+      <div class="admin-brand">
+        <span class="admin-brand-icon">🏫</span>
+        <div>
+          <h1 class="admin-brand-title">แผงควบคุม</h1>
+          <p class="admin-brand-sub">ระบบจัดการข้อมูลครูในดวงใจ</p>
+        </div>
+      </div>
+      <a href="../index.html" class="btn-back">← กลับไปหน้าโหวต</a>
+    </div>
+  </header>
+
+  <main class="admin-main container">
+
+    <!-- Stats Row -->
+    <div class="admin-stats-row" id="adminStats">
+      <div class="admin-stat-card">
+        <span class="astat-icon">👩‍🏫</span>
+        <div>
+          <div class="astat-num" id="aStatTeachers">0</div>
+          <div class="astat-label">คุณครูในระบบ</div>
+        </div>
+      </div>
+      <div class="admin-stat-card">
+        <span class="astat-icon">💗</span>
+        <div>
+          <div class="astat-num" id="aStatVotes">0</div>
+          <div class="astat-label">โหวตทั้งหมด</div>
+        </div>
+      </div>
+      <div class="admin-stat-card">
+        <span class="astat-icon">🏆</span>
+        <div>
+          <div class="astat-num" id="aStatTop">—</div>
+          <div class="astat-label">ครูอันดับ 1</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-layout">
+
+      <!-- Add / Edit Teacher Form -->
+      <section class="form-section">
+        <div class="form-card">
+          <div class="form-card-header">
+            <h2 class="form-title" id="formTitle">✏️ เพิ่มคุณครู</h2>
+          </div>
+
+          <form id="addTeacherForm" novalidate>
+
+            <!-- Photo Upload -->
+            <div class="form-group">
+              <label class="form-label">รูปโปรไฟล์</label>
+              <div class="photo-upload-area" id="photoUploadArea">
+                <div class="photo-preview" id="photoPreview">
+                  <span class="photo-placeholder">🖼️</span>
+                  <p class="photo-hint">คลิกเพื่อเลือกรูป</p>
+                  <p class="photo-hint-sub">PNG, JPG ขนาดไม่เกิน 2MB</p>
+                </div>
+                <input type="file" id="photoInput" accept="image/*" class="file-input">
+              </div>
+            </div>
+
+            <!-- Teacher Name -->
+            <div class="form-group">
+              <label class="form-label" for="teacherName">ชื่อ-นามสกุล <span class="required">*</span></label>
+              <input type="text" id="teacherName" class="form-input" placeholder="เช่น คุณครูสมศรี ใจดี" required>
+              <p class="form-error hidden" id="nameError">กรุณาระบุชื่อคุณครู</p>
+            </div>
+
+            <!-- Subject -->
+            <div class="form-group">
+              <label class="form-label" for="teacherSubject">วิชาที่สอน <span class="required">*</span></label>
+              <input type="text" id="teacherSubject" class="form-input" placeholder="เช่น คณิตศาสตร์, ภาษาไทย" required>
+              <p class="form-error hidden" id="subjectError">กรุณาระบุวิชาที่สอน</p>
+            </div>
+
+            <!-- Bio -->
+            <div class="form-group">
+              <label class="form-label" for="teacherBio">คำแนะนำตัว / คำกล่าว</label>
+              <textarea id="teacherBio" class="form-textarea" placeholder="ข้อความสั้นๆ จากคุณครู หรือคำคมที่ชื่นชอบ..." rows="3"></textarea>
+              <span class="char-count" id="bioCount">0 / 150</span>
+            </div>
+
+            <!-- Buttons -->
+            <div style="display:flex; gap:10px;">
+              <button type="submit" class="btn-submit" id="submitBtn" style="flex:1">
+                <span class="btn-submit-icon">💗</span>
+                <span id="submitBtnLabel">เพิ่มคุณครู</span>
+              </button>
+              <!-- ปุ่มยกเลิก (ซ่อนไว้ แสดงตอน edit) -->
+              <button type="button" class="btn-submit hidden" id="cancelEditBtn"
+                style="flex:0 0 auto; width:auto; padding:13px 18px;
+                       background:linear-gradient(135deg,#e0e0e0,#cacaca);
+                       color:#555; box-shadow:none;">
+                ✕ ยกเลิก
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </section>
+
+      <!-- Teachers Management Table -->
+      <section class="table-section">
+        <div class="table-card">
+          <div class="table-card-header">
+            <h2 class="form-title">📋 รายชื่อคุณครูทั้งหมด</h2>
+            <input type="text" id="adminSearch" class="admin-search" placeholder="🔍 ค้นหา...">
+          </div>
+          <div class="table-wrap">
+            <table class="teacher-table" id="teacherTable">
+              <thead>
+                <tr>
+                  <th>รูป</th>
+                  <th>ชื่อครู</th>
+                  <th>วิชา</th>
+                  <th>โหวต</th>
+                  <th>จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="teacherTableBody">
+                <tr class="table-loading">
+                  <td colspan="5">กำลังโหลดข้อมูล...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Confirm Delete Modal -->
+  <div class="modal-overlay hidden" id="deleteModal">
+    <div class="modal-card">
+      <div class="modal-icon-danger">🗑️</div>
+      <h3 class="modal-teacher-name">ลบข้อมูลครู?</h3>
+      <p class="modal-confirm-text">การลบจะไม่สามารถกู้คืนได้ คุณแน่ใจหรือไม่?</p>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="cancelDelete">ยกเลิก</button>
+        <button class="btn-danger" id="confirmDelete">ลบเลย</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast hidden" id="toast">
+    <span class="toast-icon">✅</span>
+    <span class="toast-msg" id="toastMsg">สำเร็จ</span>
+  </div>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

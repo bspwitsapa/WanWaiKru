@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>โหวตครูในดวงใจ คนไหนกันนะ?💗</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Hero Header -->
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-icon">🏫</div>
+      <h1 class="hero-title">โหวตครูในดวงใจ</h1>
+      <p class="hero-subtitle">ร่วมกันแสดงความรัก ความขอบคุณ ให้กับครูผู้ให้แสงสว่างแก่ชีวิต</p>
+      <div class="hero-stats" id="heroStats">
+        <div class="stat-pill">
+          <span class="stat-num" id="totalTeachers">0</span>
+          <span class="stat-label">คุณครู</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-num" id="totalVotes">0</span>
+          <span class="stat-label">โหวตทั้งหมด</span>
+        </div>
+      </div>
+    </div>
+    <div class="hearts-float" aria-hidden="true">
+      <span>💗</span><span>💕</span><span>🌸</span><span>💗</span>
+      <span>🌷</span><span>💕</span><span>💗</span><span>🌸</span>
+    </div>
+  </header>
+
+  <!-- Search & Filter Bar -->
+  <section class="search-section">
+    <div class="container">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="ค้นหาชื่อครู หรือวิชาที่สอน...">
+      </div>
+      <div class="filter-wrap" id="subjectFilters">
+        <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teachers Grid -->
+  <main class="main-content">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">คุณครูทั้งหมด</h2>
+        <span class="section-tag" id="countTag">กำลังโหลด...</span>
+      </div>
+
+      <div class="teachers-grid" id="teachersGrid">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+
+      <div class="empty-state hidden" id="emptyState">
+        <div class="empty-icon">🌸</div>
+        <p class="empty-text">ยังไม่พบคุณครูที่ค้นหา</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Vote Confirmation Modal -->
+  <div class="modal-overlay hidden" id="voteModal">
+    <div class="modal-card">
+      <div class="modal-teacher-img" id="modalTeacherImg"></div>
+      <h3 class="modal-teacher-name" id="modalTeacherName"></h3>
+      <p class="modal-teacher-subject" id="modalTeacherSubject"></p>
+      <p class="modal-confirm-text">คุณต้องการโหวตให้คุณครูท่านนี้ใช่ไหม?<br><small style="color:#b07a97">⚠️ โหวตได้เพียง 1 ครั้งต่ออุปกรณ์เท่านั้น</small></p>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="cancelVote">ยกเลิก</button>
+        <button class="btn-confirm" id="confirmVote">💗 โหวตเลย!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast hidden" id="toast">
+    <span class="toast-icon">💗</span>
+    <span class="toast-msg" id="toastMsg">โหวตสำเร็จแล้ว!</span>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
