@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ล้างข้อมูลโหวต (Admin)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@600;700&family=Sarabun:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background: #fff8fb;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 8px 40px rgba(220,60,120,0.12);
+      border: 1.5px solid #ffd6e7;
+      padding: 48px 40px;
+      text-align: center;
+      max-width: 420px;
+      width: 100%;
+    }
+    .icon { font-size: 64px; margin-bottom: 12px; }
+    h1 {
+      font-family: 'Prompt', sans-serif;
+      font-size: 22px;
+      color: #9e0e3b;
+      margin-bottom: 8px;
+    }
+    p { font-size: 14px; color: #b07a97; margin-bottom: 28px; line-height: 1.6; }
+    .status-box {
+      background: #fff0f5;
+      border: 1.5px solid #ffd6e7;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 24px;
+      font-size: 13px;
+      color: #6b3d5a;
+      text-align: left;
+      line-height: 1.8;
+    }
+    .status-box strong { color: #e8306a; }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      font-family: 'Prompt', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: all 0.2s;
+    }
+    .btn-clear {
+      background: linear-gradient(135deg, #e8306a, #c4184f);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(232,48,106,0.35);
+    }
+    .btn-clear:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(232,48,106,0.45); }
+    .btn-home {
+      background: transparent;
+      border: 2px solid #ffd6e7;
+      color: #e8306a;
+    }
+    .btn-home:hover { background: #fff0f5; }
+    .success-msg {
+      display: none;
+      background: #dcfce7;
+      border: 1.5px solid #86efac;
+      border-radius: 12px;
+      padding: 14px;
+      color: #15803d;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">🔑</div>
+  <h1>ล้างข้อมูลโหวตในอุปกรณ์นี้</h1>
+  <p>หน้านี้ใช้สำหรับล้างข้อมูลโหวต "ครูสายไหน" ออกจากอุปกรณ์นี้<br>เพื่อให้สามารถโหวตใหม่ได้อีกครั้ง</p>
+
+  <div class="status-box" id="statusBox">กำลังตรวจสอบ...</div>
+
+  <div class="success-msg" id="successMsg">✅ ล้างข้อมูลสำเร็จแล้ว! สามารถโหวตใหม่ได้แล้ว</div>
+
+  <button class="btn btn-clear" id="clearBtn">🗑️ ล้างข้อมูลโหวตครูสายไหน</button>
+  <a href="vote-type.html" class="btn btn-home" style="text-decoration:none;display:block;padding:14px;">🎯 ไปหน้าโหวตครูสายไหน</a>
+  <a href="index.html" class="btn btn-home" style="text-decoration:none;display:block;padding:14px;">🏫 กลับหน้าหลัก</a>
+</div>
+
+<script>
+  const KEYS = ["stylevote_done", "stylevote_teacher_id"];
+
+  function checkStatus() {
+    const done = localStorage.getItem("stylevote_done");
+    const tid  = localStorage.getItem("stylevote_teacher_id");
+    const box  = document.getElementById("statusBox");
+    if (done) {
+      box.innerHTML = `สถานะ: <strong>โหวตแล้ว</strong><br>Teacher ID: <strong>${tid || "-"}</strong><br><br>กดปุ่มด้านล่างเพื่อล้างข้อมูล`;
+    } else {
+      box.innerHTML = `สถานะ: <strong style="color:#15803d">ยังไม่ได้โหวต</strong> — ไม่มีข้อมูลในอุปกรณ์นี้`;
+    }
+  }
+
+  document.getElementById("clearBtn").addEventListener("click", () => {
+    KEYS.forEach(k => localStorage.removeItem(k));
+    document.getElementById("successMsg").style.display = "block";
+    document.getElementById("clearBtn").disabled = true;
+    document.getElementById("clearBtn").style.opacity = "0.5";
+    checkStatus();
+  });
+
+  checkStatus();
+</script>
+</body>
+</html>

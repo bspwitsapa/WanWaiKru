@@ -6,6 +6,7 @@
   <title>โหวตครูในดวงใจ คนไหนกันนะ?💗</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -33,6 +34,21 @@
     </div>
   </header>
 
+  <!-- Vote Type CTA Banner -->
+  <div class="vote-type-banner">
+    <div class="vtb-inner container">
+      <div class="vtb-text">
+        <span class="vtb-tag">✨ ใหม่!</span>
+        <p class="vtb-title">คุณครูในดวงใจ…สายไหนกันนะ? 🎯</p>
+        <p class="vtb-sub">โหวตให้ครูที่คุณชอบว่าเป็นสายอะไร — สายคอนเทนต์, สายบันเทิง, สายใจดี และอีก 6 สาย!</p>
+      </div>
+      <a href="vote-type.html" class="vtb-btn">
+        🎯 โหวตครูสายไหน
+        <span class="vtb-arrow">→</span>
+      </a>
+    </div>
+  </div>
+
   <!-- Search & Filter Bar -->
   <section class="search-section">
     <div class="container">
@@ -46,10 +62,34 @@
     </div>
   </section>
 
+  <!-- Top 3 Podium -->
+  <section class="podium-section hidden" id="podiumSection">
+    <div class="container">
+      <div class="podium-header">
+        <h2 class="podium-main-title">🏆 3 อันดับครูในดวงใจ</h2>
+        <p class="podium-main-sub">อัปเดตแบบเรียลไทม์ · โหวตได้ 1 ครั้ง/อุปกรณ์</p>
+      </div>
+      <div class="podium-stage" id="podiumStage">
+        <!-- rendered by app.js -->
+      </div>
+    </div>
+  </section>
+
   <!-- Teachers Grid -->
   <main class="main-content">
     <div class="container">
-      <div class="section-header">
+      <!-- Vote Chart -->
+      <div class="chart-section" id="chartSection">
+        <div class="chart-header">
+          <h2 class="section-title">📊 อันดับโหวตครูในดวงใจ</h2>
+          <span class="chart-subtitle">Top 10 คุณครูที่ได้รับโหวตสูงสุด</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="voteChart"></canvas>
+        </div>
+      </div>
+
+      <div class="section-header" style="margin-top:40px;">
         <h2 class="section-title">คุณครูทั้งหมด</h2>
         <span class="section-tag" id="countTag">กำลังโหลด...</span>
       </div>

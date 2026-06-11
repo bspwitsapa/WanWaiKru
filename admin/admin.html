@@ -20,7 +20,7 @@
           <p class="admin-brand-sub">ระบบจัดการข้อมูลครูในดวงใจ</p>
         </div>
       </div>
-      <a href="../index.html" class="btn-back">← กลับไปหน้าโหวต</a>
+      <a href="../index.html" class="btn-back">← โหวตครูในดวงใจ</a>
     </div>
   </header>
 
@@ -89,6 +89,25 @@
               <p class="form-error hidden" id="subjectError">กรุณาระบุวิชาที่สอน</p>
             </div>
 
+            <!-- Subject Group -->
+            <div class="form-group">
+              <label class="form-label" for="teacherSubjectGroup">กลุ่มสาระการเรียนรู้ <span class="required">*</span></label>
+              <select id="teacherSubjectGroup" class="form-input" required>
+                <option value="">— เลือกกลุ่มสาระ —</option>
+                <option value="กลุ่มสาระการเรียนรู้วิชาภาษาต่างประเทศ">ภาษาต่างประเทศ</option>
+                <option value="กลุ่มสาระการเรียนรู้วิชาวิทยาศาสตร์">วิทยาศาสตร์</option>
+                <option value="กลุ่มสาระการเรียนรู้วิชาแนะแนว">แนะแนว</option>
+                <option value="กลุ่มสาระการเรียนรู้วิชาการงานอาชีพ">การงานอาชีพ</option>
+                <option value="กลุ่มสาระการเรียนรู้วิชาคณิตศาสตร์">คณิตศาสตร์</option>
+                <option value="กลุ่มสาระการเรียนรู้วิชาภาษาไทย">ภาษาไทย</option>
+                <option value="กลุ่มสาระการเรียนรู้วิชาสังคมศึกษา">สังคมศึกษา</option>
+                <option value="กลุ่มสาระการเรียนรู้วิชาสุขศึกษาและพลศึกษา">สุขศึกษาและพลศึกษา</option>
+                <option value="กลุ่มสาระการเรียนรู้วิชาศิลปะ">ศิลปะ</option>
+                <option value="ฝ่ายบริหาร">ฝ่ายบริหาร</option>
+              </select>
+              <p class="form-error hidden" id="subjectGroupError">กรุณาเลือกกลุ่มสาระการเรียนรู้</p>
+            </div>
+
             <!-- Bio -->
             <div class="form-group">
               <label class="form-label" for="teacherBio">คำแนะนำตัว / คำกล่าว</label>
@@ -129,6 +148,7 @@
                   <th>รูป</th>
                   <th>ชื่อครู</th>
                   <th>วิชา</th>
+                  <th>กลุ่มสาระ</th>
                   <th>โหวต</th>
                   <th>จัดการ</th>
                 </tr>

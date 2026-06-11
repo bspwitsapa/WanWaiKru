@@ -10,6 +10,7 @@ import {
   query, orderBy, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+
 // ---- Cloudinary Config ----
 const CLOUDINARY_CLOUD = "dvqgvxygs";
 const CLOUDINARY_PRESET = "wai_kru_upload"; // unsigned preset (สร้างใน Cloudinary)
@@ -20,14 +21,16 @@ const formTitle          = document.getElementById("formTitle");
 const photoInput         = document.getElementById("photoInput");
 const photoPreview       = document.getElementById("photoPreview");
 const teacherNameInput   = document.getElementById("teacherName");
-const teacherSubjectInput= document.getElementById("teacherSubject");
-const teacherBioInput    = document.getElementById("teacherBio");
+const teacherSubjectInput     = document.getElementById("teacherSubject");
+const teacherSubjectGroupInput= document.getElementById("teacherSubjectGroup");
+const teacherBioInput         = document.getElementById("teacherBio");
 const bioCount           = document.getElementById("bioCount");
 const submitBtn          = document.getElementById("submitBtn");
 const submitBtnLabel     = document.getElementById("submitBtnLabel");
 const cancelEditBtn      = document.getElementById("cancelEditBtn");
 const nameError          = document.getElementById("nameError");
-const subjectError       = document.getElementById("subjectError");
+const subjectError            = document.getElementById("subjectError");
+const subjectGroupError       = document.getElementById("subjectGroupError");
 const teacherTableBody   = document.getElementById("teacherTableBody");
 const adminSearch        = document.getElementById("adminSearch");
 
@@ -93,6 +96,7 @@ function renderTable(teachers) {
       </td>
       <td><span class="table-name">${escHtml(t.name || "")}</span></td>
       <td><span class="table-subject-tag">${escHtml(t.subject || "")}</span></td>
+      <td><span class="table-subject-tag" style="font-size:0.78rem">${escHtml(shortGroup(t.subjectGroup || ""))}</span></td>
       <td><span class="table-vote-count">💗 ${(t.votes || 0).toLocaleString()}</span></td>
       <td>
         <div class="table-actions">
@@ -163,9 +167,10 @@ async function uploadToCloudinary(file) {
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const name    = teacherNameInput.value.trim();
-  const subject = teacherSubjectInput.value.trim();
-  const bio     = teacherBioInput.value.trim();
+  const name         = teacherNameInput.value.trim();
+  const subject      = teacherSubjectInput.value.trim();
+  const subjectGroup = teacherSubjectGroupInput.value;
+  const bio          = teacherBioInput.value.trim();
 
   // Validate
   let valid = true;
@@ -185,6 +190,14 @@ form.addEventListener("submit", async (e) => {
     subjectError.classList.add("hidden");
     teacherSubjectInput.classList.remove("error");
   }
+  if (!subjectGroup) {
+    subjectGroupError.classList.remove("hidden");
+    teacherSubjectGroupInput.classList.add("error");
+    valid = false;
+  } else {
+    subjectGroupError.classList.add("hidden");
+    teacherSubjectGroupInput.classList.remove("error");
+  }
   if (!valid) return;
 
   setSubmitLoading(true);
@@ -200,7 +213,7 @@ form.addEventListener("submit", async (e) => {
       photoURL = await uploadToCloudinary(selectedPhoto);
     }
 
-    const data = { name, subject, bio, photoURL };
+    const data = { name, subject, subjectGroup, bio, photoURL };
 
     if (editingId) {
       await updateDoc(doc(db, "teachers", editingId), data);
@@ -238,9 +251,10 @@ cancelEditBtn.addEventListener("click", resetForm);
 // ---- Start Editing ----
 function startEdit(teacher) {
   editingId = teacher.id;
-  teacherNameInput.value    = teacher.name    || "";
-  teacherSubjectInput.value = teacher.subject || "";
-  teacherBioInput.value     = teacher.bio     || "";
+  teacherNameInput.value         = teacher.name         || "";
+  teacherSubjectInput.value      = teacher.subject      || "";
+  teacherSubjectGroupInput.value = teacher.subjectGroup || "";
+  teacherBioInput.value          = teacher.bio          || "";
   bioCount.textContent      = `${(teacher.bio || "").length} / 150`;
 
   if (teacher.photoURL) {
@@ -276,8 +290,10 @@ function resetForm() {
 
   nameError.classList.add("hidden");
   subjectError.classList.add("hidden");
+  subjectGroupError.classList.add("hidden");
   teacherNameInput.classList.remove("error");
   teacherSubjectInput.classList.remove("error");
+  teacherSubjectGroupInput.classList.remove("error");
 }
 
 // ---- Delete Modal ----
@@ -326,4 +342,10 @@ function escHtml(str) {
   const d = document.createElement("div");
   d.appendChild(document.createTextNode(str));
   return d.innerHTML;
+}
+
+function shortGroup(group) {
+  return group
+    .replace("กลุ่มสาระการเรียนรู้วิชา", "")
+    .replace("กลุ่มสาระการเรียนรู้", "");
 }

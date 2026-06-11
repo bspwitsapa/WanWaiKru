@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ครูในดวงใจ สายไหนกันนะ 🎯</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* =======================================
+       vote-type.html — override & page styles
+       ======================================= */
+
+    /* Step system */
+    .vt-step { display: none; }
+    .vt-step.active { display: block; animation: vtFadeIn .35s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes vtFadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ---- Header ---- */
+    .vt-header {
+      background: linear-gradient(145deg, #fce8f0 0%, #ffd6e7 50%, #ffafd0 100%);
+      padding: 48px 24px 36px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .vt-header::before {
+      content: "🎯🌸💗🎬📝✨";
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 60px; opacity: .06;
+      letter-spacing: 20px; pointer-events: none;
+    }
+    .vt-header-icon { font-size: 52px; display: block; margin-bottom: 10px;
+      animation: floatHero 3s ease-in-out infinite; }
+    .vt-header-title {
+      font-family: var(--font-display); font-size: clamp(24px,5vw,40px);
+      font-weight: 700; color: var(--pink-700);
+      text-shadow: 0 2px 0 rgba(255,255,255,.6); margin-bottom: 8px;
+    }
+    .vt-header-sub { font-size: 14px; color: var(--text-mid); }
+    .vt-back-home {
+      position: absolute; top: 16px; left: 20px;
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--pink-600); font-size: 13px; font-weight: 600;
+      text-decoration: none; background: rgba(255,255,255,.7);
+      padding: 6px 14px; border-radius: var(--radius-full);
+      border: 1.5px solid var(--pink-200); backdrop-filter: blur(4px);
+      transition: all var(--ease);
+    }
+    .vt-back-home:hover { background: #fff; color: var(--pink-700); transform: translateX(-2px); }
+
+    /* Breadcrumb steps */
+    .vt-steps-nav {
+      display: flex; align-items: center; justify-content: center; gap: 0;
+      background: var(--white); padding: 14px 24px;
+      border-bottom: 1.5px solid var(--pink-100);
+    }
+    .vt-step-dot {
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      font-size: 11px; color: var(--text-muted); font-weight: 600; min-width: 60px;
+    }
+    .vt-step-dot .dot {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--pink-100); color: var(--pink-400);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; transition: all .3s;
+    }
+    .vt-step-dot.done .dot { background: var(--pink-200); color: var(--pink-600); }
+    .vt-step-dot.active .dot {
+      background: linear-gradient(135deg, var(--pink-400), var(--pink-500));
+      color: #fff; box-shadow: 0 3px 12px rgba(232,48,106,.35);
+    }
+    .vt-step-dot.active { color: var(--pink-600); }
+    .vt-step-line {
+      flex: 1; height: 2px; background: var(--pink-100);
+      max-width: 48px; margin: 0 2px; margin-bottom: 16px;
+    }
+    .vt-step-line.done { background: var(--pink-300); }
+
+    /* ---- Back button ---- */
+    .vt-back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--pink-600); font-size: 14px; font-weight: 600;
+      background: none; border: none; cursor: pointer; padding: 8px 0;
+      transition: all var(--ease);
+    }
+    .vt-back-btn:hover { color: var(--pink-700); transform: translateX(-3px); }
+
+    /* ---- Step headings ---- */
+    .vt-step-title {
+      font-family: var(--font-display); font-size: 20px;
+      font-weight: 700; color: var(--pink-700); margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* ---- Group cards (Step 1) ---- */
+    .group-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .group-card {
+      background: var(--white); border: 2px solid var(--pink-100);
+      border-radius: var(--radius-md); padding: 18px 16px;
+      cursor: pointer; transition: all var(--transition);
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+    .group-card:hover {
+      border-color: var(--pink-400); background: var(--pink-50);
+      transform: translateY(-3px); box-shadow: var(--shadow-md);
+    }
+    .group-card-icon { font-size: 28px; flex-shrink: 0; }
+    .group-card-label {
+      font-family: var(--font-display); font-size: 15px;
+      font-weight: 600; color: var(--text-dark); line-height: 1.3;
+    }
+
+    /* ---- Teacher cards (Step 2) ---- */
+    .vt-teachers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 18px;
+    }
+    .vt-teacher-card {
+      background: var(--white); border: 2px solid var(--pink-100);
+      border-radius: var(--radius-md); padding: 18px;
+      cursor: pointer; transition: all var(--transition);
+      display: flex; align-items: center; gap: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+    .vt-teacher-card:hover {
+      border-color: var(--pink-400); background: var(--pink-50);
+      transform: translateY(-3px); box-shadow: var(--shadow-md);
+    }
+    .vt-teacher-card.already-voted {
+      border-color: #e0e0e0; opacity: .72; cursor: default;
+    }
+    .vt-teacher-card.already-voted:hover { transform: none; box-shadow: var(--shadow-sm); }
+    .vt-teacher-photo {
+      width: 60px; height: 60px; border-radius: 50%; object-fit: cover;
+      border: 2px solid var(--pink-200); flex-shrink: 0;
+      background: var(--pink-100); display: flex; align-items: center;
+      justify-content: center; font-size: 28px; overflow: hidden;
+    }
+    .vt-teacher-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .vt-teacher-info { flex: 1; min-width: 0; }
+    .vt-teacher-name {
+      font-family: var(--font-display); font-size: 14px; font-weight: 700;
+      color: var(--text-dark); margin-bottom: 3px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .vt-teacher-subject {
+      font-size: 12px; color: var(--text-light);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .vt-voted-badge {
+      font-size: 10px; font-weight: 700; color: var(--pink-600);
+      background: var(--pink-100); padding: 2px 8px;
+      border-radius: var(--radius-full); margin-top: 4px; display: inline-block;
+    }
+    .vt-teachers-empty {
+      text-align: center; padding: 60px 20px; color: var(--text-light);
+    }
+    .vt-teachers-empty .empty-icon { font-size: 52px; margin-bottom: 10px; }
+
+    /* ---- Voting panel (Step 3) ---- */
+    .vt-vote-panel {
+      background: var(--white); border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg); border: 1.5px solid var(--pink-100);
+      max-width: 680px; margin: 0 auto; overflow: hidden;
+    }
+    .vt-vote-panel-head {
+      background: linear-gradient(135deg, var(--pink-500), var(--pink-600));
+      padding: 18px 24px; color: #fff;
+    }
+    .vt-vote-panel-head h3 {
+      font-family: var(--font-display); font-size: 18px; font-weight: 700;
+    }
+    .vt-vote-panel-body { padding: 28px 24px; }
+
+    .vt-selected-teacher {
+      display: flex; align-items: center; gap: 18px; margin-bottom: 28px;
+      padding: 16px 18px; background: var(--pink-50);
+      border-radius: var(--radius-md); border: 1.5px solid var(--pink-100);
+    }
+    .vt-sel-photo {
+      width: 72px; height: 72px; border-radius: 50%; border: 2.5px solid var(--pink-300);
+      background: var(--pink-100); display: flex; align-items: center;
+      justify-content: center; font-size: 36px; overflow: hidden; flex-shrink: 0;
+    }
+    .vt-sel-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .vt-sel-name {
+      font-family: var(--font-display); font-size: 18px; font-weight: 700;
+      color: var(--text-dark); margin-bottom: 3px;
+    }
+    .vt-sel-subject { font-size: 13px; color: var(--text-mid); }
+    .vt-sel-group {
+      font-size: 11px; color: var(--text-light); margin-top: 4px;
+    }
+
+    .vt-already-notice {
+      display: none; background: var(--peach-100); border: 1.5px solid var(--peach-200);
+      color: #9e4c20; border-radius: var(--radius-md); padding: 12px 16px;
+      font-size: 14px; text-align: center; margin-bottom: 16px;
+    }
+
+    .vt-style-title {
+      font-family: var(--font-display); font-size: 17px; font-weight: 700;
+      color: var(--pink-700); text-align: center; margin-bottom: 16px;
+    }
+
+    .vt-style-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    }
+    .vt-style-btn {
+      border: 2px solid var(--pink-200); border-radius: var(--radius-md);
+      background: var(--white); padding: 14px 10px;
+      cursor: pointer; transition: all var(--ease); text-align: center;
+      font-family: var(--font-body); display: flex; flex-direction: column;
+      align-items: center; gap: 6px;
+    }
+    .vt-style-btn:hover {
+      border-color: var(--pink-400); background: var(--pink-50);
+      transform: translateY(-2px); box-shadow: var(--shadow-sm);
+    }
+    .vt-style-btn.selected {
+      border-color: var(--pink-500); background: var(--pink-100);
+      box-shadow: 0 0 0 3px rgba(232,48,106,.15);
+    }
+    .vt-style-btn .style-emoji { font-size: 24px; }
+    .vt-style-btn .style-label {
+      font-size: 12px; font-weight: 700; color: var(--text-dark);
+      line-height: 1.3;
+    }
+    .vt-style-btn.selected .style-label { color: var(--pink-600); }
+
+    .vt-submit-row {
+      text-align: center; margin-top: 24px;
+    }
+    .vt-submit-btn {
+      background: linear-gradient(135deg, var(--pink-400), var(--pink-500));
+      color: #fff; border: none; border-radius: var(--radius-lg);
+      font-family: var(--font-display); font-size: 16px; font-weight: 700;
+      padding: 14px 40px; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(232,48,106,.35);
+      transition: all var(--transition);
+    }
+    .vt-submit-btn:hover:not(:disabled) {
+      background: linear-gradient(135deg, var(--pink-300), var(--pink-400));
+      transform: translateY(-2px); box-shadow: 0 6px 24px rgba(232,48,106,.45);
+    }
+    .vt-submit-btn:disabled {
+      opacity: .45; cursor: not-allowed; transform: none; box-shadow: none;
+    }
+
+    /* ---- Thank you (Step 4) ---- */
+    .vt-thankyou {
+      background: var(--white); border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg); border: 1.5px solid var(--pink-100);
+      max-width: 440px; margin: 0 auto; text-align: center;
+      padding: 48px 32px;
+    }
+    .vt-ty-icon { font-size: 64px; margin-bottom: 12px;
+      display: block; animation: floatHero 3s ease-in-out infinite; }
+    .vt-ty-title {
+      font-family: var(--font-display); font-size: 24px; font-weight: 700;
+      color: var(--pink-700); margin-bottom: 6px;
+    }
+    .vt-ty-sub { font-size: 15px; color: var(--text-light); margin-bottom: 24px; }
+    .vt-ty-summary {
+      background: var(--pink-50); border: 1.5px solid var(--pink-100);
+      border-radius: var(--radius-lg); padding: 20px; margin-bottom: 24px;
+    }
+    .vt-ty-summary-label { font-size: 13px; color: var(--text-light); margin-bottom: 6px; }
+    .vt-ty-teacher-name {
+      font-family: var(--font-display); font-size: 19px; font-weight: 700;
+      color: var(--text-dark); margin-bottom: 4px;
+    }
+    .vt-ty-teacher-subject { font-size: 13px; color: var(--text-mid); margin-bottom: 14px; }
+    .vt-ty-style-chip {
+      display: inline-block; background: linear-gradient(135deg, var(--pink-400), var(--pink-500));
+      color: #fff; font-family: var(--font-display); font-size: 16px; font-weight: 700;
+      padding: 10px 24px; border-radius: var(--radius-full);
+      box-shadow: 0 3px 14px rgba(232,48,106,.35);
+    }
+    .vt-again-btn {
+      background: var(--white); border: 2px solid var(--pink-400);
+      color: var(--pink-600); font-family: var(--font-display);
+      font-size: 15px; font-weight: 700; padding: 12px 28px;
+      border-radius: var(--radius-lg); cursor: pointer;
+      transition: all var(--ease);
+    }
+    .vt-again-btn:hover {
+      background: var(--pink-50); border-color: var(--pink-500);
+      transform: translateY(-2px);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .vt-style-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .vt-style-btn { padding: 10px 6px; }
+      .vt-style-btn .style-emoji { font-size: 20px; }
+      .vt-style-btn .style-label { font-size: 11px; }
+      .group-grid { grid-template-columns: 1fr 1fr; }
+      .vt-teachers-grid { grid-template-columns: 1fr; }
+      .vt-thankyou { padding: 36px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ====== HEADER ====== -->
+<header class="vt-header">
+  <a href="index.html" class="vt-back-home">← กลับหน้าหลัก</a>
+  <span class="vt-header-icon">🎯</span>
+  <h1 class="vt-header-title">ครูในดวงใจ สายไหนกันนะ?</h1>
+  <p class="vt-header-sub">ร่วมโหวตว่าคุณครูของคุณเป็นสายไหน — 1 อุปกรณ์ / 1 ครู</p>
+</header>
+
+<!-- ====== STEP BREADCRUMB ====== -->
+<nav class="vt-steps-nav" id="stepsNav">
+  <div class="vt-step-dot active" id="nav-1">
+    <div class="dot">1</div>
+    <span>กลุ่มสาระ</span>
+  </div>
+  <div class="vt-step-line" id="line-1"></div>
+  <div class="vt-step-dot" id="nav-2">
+    <div class="dot">2</div>
+    <span>เลือกครู</span>
+  </div>
+  <div class="vt-step-line" id="line-2"></div>
+  <div class="vt-step-dot" id="nav-3">
+    <div class="dot">3</div>
+    <span>โหวตสาย</span>
+  </div>
+  <div class="vt-step-line" id="line-3"></div>
+  <div class="vt-step-dot" id="nav-4">
+    <div class="dot">✓</div>
+    <span>เสร็จสิ้น</span>
+  </div>
+</nav>
+
+<!-- ====== MAIN ====== -->
+<main class="main-content" style="padding: 36px 0 80px;">
+<div class="container">
+
+  <!-- STEP 1 : เลือกกลุ่มสาระ -->
+  <div class="vt-step active" id="step-subjects">
+    <h2 class="vt-step-title">📚 เลือกกลุ่มสาระการเรียนรู้</h2>
+    <div class="group-grid">
+
+      <button class="group-card" data-group="กลุ่มสาระการเรียนรู้วิชาคณิตศาสตร์">
+        <span class="group-card-icon">📐</span>
+        <span class="group-card-label">คณิตศาสตร์</span>
+      </button>
+      <button class="group-card" data-group="กลุ่มสาระการเรียนรู้วิชาวิทยาศาสตร์">
+        <span class="group-card-icon">🔬</span>
+        <span class="group-card-label">วิทยาศาสตร์</span>
+      </button>
+      <button class="group-card" data-group="กลุ่มสาระการเรียนรู้วิชาภาษาไทย">
+        <span class="group-card-icon">📚</span>
+        <span class="group-card-label">ภาษาไทย</span>
+      </button>
+      <button class="group-card" data-group="กลุ่มสาระการเรียนรู้วิชาภาษาต่างประเทศ">
+        <span class="group-card-icon">🌎</span>
+        <span class="group-card-label">ภาษาต่างประเทศ</span>
+      </button>
+      <button class="group-card" data-group="กลุ่มสาระการเรียนรู้วิชาสังคมศึกษา">
+        <span class="group-card-icon">🏛️</span>
+        <span class="group-card-label">สังคมศึกษา</span>
+      </button>
+      <button class="group-card" data-group="กลุ่มสาระการเรียนรู้วิชาสุขศึกษาและพลศึกษา">
+        <span class="group-card-icon">⚽</span>
+        <span class="group-card-label">สุขศึกษาและพลศึกษา</span>
+      </button>
+      <button class="group-card" data-group="กลุ่มสาระการเรียนรู้วิชาการงานอาชีพ">
+        <span class="group-card-icon">🔨</span>
+        <span class="group-card-label">การงานอาชีพ</span>
+      </button>
+      <button class="group-card" data-group="กลุ่มสาระการเรียนรู้วิชาศิลปะ">
+        <span class="group-card-icon">🎨</span>
+        <span class="group-card-label">ศิลปะ</span>
+      </button>
+      <button class="group-card" data-group="กลุ่มสาระการเรียนรู้วิชาแนะแนว">
+        <span class="group-card-icon">🧭</span>
+        <span class="group-card-label">แนะแนว</span>
+      </button>
+      <button class="group-card" data-group="ฝ่ายบริหาร">
+        <span class="group-card-icon">🏫</span>
+        <span class="group-card-label">ฝ่ายบริหาร</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- STEP 2 : เลือกครู -->
+  <div class="vt-step" id="step-teachers">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+      <button class="vt-back-btn" id="back-to-subjects">← กลับ</button>
+      <h2 class="vt-step-title" id="group-title" style="margin-bottom:0;">เลือกคุณครู</h2>
+    </div>
+    <div class="vt-teachers-grid" id="teachers-container"></div>
+    <div class="vt-teachers-empty hidden" id="teachers-empty">
+      <div class="empty-icon">🌸</div>
+      <p>ยังไม่มีคุณครูในกลุ่มสาระนี้</p>
+    </div>
+  </div>
+
+  <!-- STEP 3 : โหวตสาย -->
+  <div class="vt-step" id="step-voting">
+    <button class="vt-back-btn" id="back-to-teachers" style="margin-bottom:16px;">← กลับ</button>
+
+    <div class="vt-vote-panel">
+      <div class="vt-vote-panel-head">
+        <h3>🎯 เลือกสายให้คุณครู</h3>
+      </div>
+      <div class="vt-vote-panel-body">
+
+        <!-- ครูที่เลือก -->
+        <div class="vt-selected-teacher">
+          <div class="vt-sel-photo" id="sel-photo">👩‍🏫</div>
+          <div>
+            <div class="vt-sel-name" id="sel-name"></div>
+            <div class="vt-sel-subject" id="sel-subject"></div>
+            <div class="vt-sel-group" id="sel-group"></div>
+          </div>
+        </div>
+
+        <!-- แจ้งโหวตแล้ว -->
+        <div class="vt-already-notice" id="already-notice">
+          ⚠️ คุณเคยโหวตสายให้ครูท่านนี้แล้ว ไม่สามารถโหวตซ้ำได้
+        </div>
+
+        <p class="vt-style-title">คุณครูคนนี้ สายไหนกันนะ?</p>
+
+        <div class="vt-style-grid" id="style-grid">
+          <button class="vt-style-btn" data-opt="1" data-label="สายคอนเทนต์">
+            <span class="style-emoji">🎬</span>
+            <span class="style-label">สายคอนเทนต์</span>
+          </button>
+          <button class="vt-style-btn" data-opt="2" data-label="สายข้อสอบโหด">
+            <span class="style-emoji">📝</span>
+            <span class="style-label">สายข้อสอบโหด</span>
+          </button>
+          <button class="vt-style-btn" data-opt="3" data-label="สายสอนเกินคาบ">
+            <span class="style-emoji">⏰</span>
+            <span class="style-label">สายสอนเกินคาบ</span>
+          </button>
+          <button class="vt-style-btn" data-opt="4" data-label="สายบันเทิง">
+            <span class="style-emoji">😂</span>
+            <span class="style-label">สายบันเทิง</span>
+          </button>
+          <button class="vt-style-btn" data-opt="5" data-label="สายเจ้าระเบียบ">
+            <span class="style-emoji">📏</span>
+            <span class="style-label">สายเจ้าระเบียบ</span>
+          </button>
+          <button class="vt-style-btn" data-opt="6" data-label="สายเข้าใจนักเรียน">
+            <span class="style-emoji">🤝</span>
+            <span class="style-label">สายเข้าใจนักเรียน</span>
+          </button>
+          <button class="vt-style-btn" data-opt="7" data-label="สายตั้งใจสอน">
+            <span class="style-emoji">💪</span>
+            <span class="style-label">สายตั้งใจสอน</span>
+          </button>
+          <button class="vt-style-btn" data-opt="8" data-label="สายใจดีมีเมตตา">
+            <span class="style-emoji">💚</span>
+            <span class="style-label">สายใจดีมีเมตตา</span>
+          </button>
+          <button class="vt-style-btn" data-opt="9" data-label="สายแฟชั่น">
+            <span class="style-emoji">✨</span>
+            <span class="style-label">สายแฟชั่น</span>
+          </button>
+        </div>
+
+        <div class="vt-submit-row">
+          <button class="vt-submit-btn" id="submit-vote" disabled>ส่งโหวต 🎯</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 : ขอบคุณ -->
+  <div class="vt-step" id="step-thankyou">
+    <div class="vt-thankyou">
+      <span class="vt-ty-icon">🎉</span>
+      <h3 class="vt-ty-title">ขอบคุณสำหรับการโหวต!</h3>
+      <p class="vt-ty-sub">บันทึกเรียบร้อยแล้ว 💗</p>
+      <div class="vt-ty-summary">
+        <p class="vt-ty-summary-label">คุณได้โหวตให้</p>
+        <p class="vt-ty-teacher-name" id="ty-name"></p>
+        <p class="vt-ty-teacher-subject" id="ty-subject"></p>
+        <div class="vt-ty-style-chip" id="ty-style"></div>
+      </div>
+      <a href="index.html" class="vt-again-btn">🏫 กลับหน้าหลัก</a>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<!-- Toast -->
+<div class="toast hidden" id="toast">
+  <span class="toast-icon">🎯</span>
+  <span class="toast-msg" id="toast-msg"></span>
+</div>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
