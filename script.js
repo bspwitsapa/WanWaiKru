@@ -162,7 +162,7 @@ function renderTeachers(group) {
       ${photoEl}
       <div class="vt-teacher-info">
         <div class="vt-teacher-name">${esc(teacher.name || "")}</div>
-        <div class="vt-teacher-subject">📚 ${esc(teacher.subject || "")}</div>
+        <div class="vt-teacher-subject">✏️ ${esc(teacher.subject || "")}</div>
         ${badge}
       </div>
     `;
@@ -196,7 +196,7 @@ function openVotingStep(teacher) {
     photoEl.textContent = "👩‍🏫";
   }
   document.getElementById("sel-name").textContent    = teacher.name    || "";
-  document.getElementById("sel-subject").textContent = `📚 ${teacher.subject || ""}`;
+  document.getElementById("sel-subject").textContent = `✏️ ${teacher.subject || ""}`;
   document.getElementById("sel-group").textContent   = teacher.subjectGroup || "";
 
   // reset

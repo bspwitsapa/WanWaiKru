@@ -231,7 +231,7 @@ function createCard(teacher, rank) {
     <div class="card-body">
       <h3 class="card-name">${escHtml(teacher.name || "")}</h3>
       ${teacher.subjectGroup ? `<span class="card-group-badge">${escHtml(shortGroup(teacher.subjectGroup))}</span>` : ""}
-      <span class="card-subject">📚 ${escHtml(teacher.subject || "")}</span>
+      <span class="card-subject">✏️ ${escHtml(teacher.subject || "")}</span>
       <p class="card-bio">${escHtml(teacher.bio || "")}</p>
     </div>
     <div class="vote-bar-wrap">

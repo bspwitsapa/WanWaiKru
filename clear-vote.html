@@ -20,107 +20,346 @@
       border-radius: 24px;
       box-shadow: 0 8px 40px rgba(220,60,120,0.12);
       border: 1.5px solid #ffd6e7;
-      padding: 48px 40px;
-      text-align: center;
-      max-width: 420px;
+      padding: 40px 36px;
+      max-width: 460px;
       width: 100%;
     }
-    .icon { font-size: 64px; margin-bottom: 12px; }
+    .page-icon { font-size: 56px; text-align: center; margin-bottom: 10px; }
     h1 {
       font-family: 'Prompt', sans-serif;
       font-size: 22px;
       color: #9e0e3b;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      text-align: center;
     }
-    p { font-size: 14px; color: #b07a97; margin-bottom: 28px; line-height: 1.6; }
+    .desc { font-size: 13px; color: #b07a97; margin-bottom: 28px; line-height: 1.6; text-align: center; }
+
+    /* Sections */
+    .section {
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .section-pink  { background: #fff0f5; border: 1.5px solid #ffd6e7; }
+    .section-red   { background: #fff5f5; border: 1.5px solid #fecaca; }
+
+    .section-title {
+      font-family: 'Prompt', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .section-pink .section-title { color: #c4184f; }
+    .section-red  .section-title { color: #b91c1c; }
+
+    .section-desc { font-size: 12px; color: #9ca3af; margin-bottom: 14px; line-height: 1.6; }
+
     .status-box {
-      background: #fff0f5;
-      border: 1.5px solid #ffd6e7;
-      border-radius: 12px;
-      padding: 14px 18px;
-      margin-bottom: 24px;
-      font-size: 13px;
+      font-size: 12px;
       color: #6b3d5a;
-      text-align: left;
-      line-height: 1.8;
+      line-height: 2;
+      margin-bottom: 14px;
     }
     .status-box strong { color: #e8306a; }
+    .ok { color: #15803d; font-weight: 700; }
+
+    /* Buttons */
     .btn {
       display: block;
       width: 100%;
-      padding: 14px;
+      padding: 13px;
       border: none;
-      border-radius: 14px;
+      border-radius: 12px;
       font-family: 'Prompt', sans-serif;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 700;
       cursor: pointer;
-      margin-bottom: 12px;
       transition: all 0.2s;
+      text-decoration: none;
+      text-align: center;
     }
-    .btn-clear {
+    .btn + .btn { margin-top: 8px; }
+    .btn-pink {
       background: linear-gradient(135deg, #e8306a, #c4184f);
       color: #fff;
-      box-shadow: 0 4px 18px rgba(232,48,106,0.35);
+      box-shadow: 0 3px 14px rgba(232,48,106,0.3);
     }
-    .btn-clear:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(232,48,106,0.45); }
-    .btn-home {
+    .btn-pink:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 18px rgba(232,48,106,0.4); }
+
+    .btn-red {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      color: #fff;
+      box-shadow: 0 3px 14px rgba(239,68,68,0.3);
+    }
+    .btn-red:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 18px rgba(239,68,68,0.4); }
+
+    .btn-outline {
       background: transparent;
       border: 2px solid #ffd6e7;
       color: #e8306a;
+      margin-top: 4px;
     }
-    .btn-home:hover { background: #fff0f5; }
-    .success-msg {
-      display: none;
-      background: #dcfce7;
-      border: 1.5px solid #86efac;
-      border-radius: 12px;
-      padding: 14px;
-      color: #15803d;
-      font-size: 15px;
+    .btn-outline:hover { background: #fff0f5; }
+
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+    /* Alerts */
+    .alert {
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
       font-weight: 600;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
+      display: none;
     }
+    .alert-success { background: #dcfce7; border: 1.5px solid #86efac; color: #15803d; }
+    .alert-error   { background: #fee2e2; border: 1.5px solid #fca5a5; color: #991b1b; }
+
+    /* Confirm overlay */
+    .overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(45,27,40,0.55);
+      backdrop-filter: blur(6px);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .overlay.show { display: flex; }
+    .confirm-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px 28px;
+      max-width: 340px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.22);
+      animation: popIn .25s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes popIn {
+      from { transform: scale(.9); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .confirm-icon { font-size: 52px; margin-bottom: 10px; }
+    .confirm-title { font-family: 'Prompt',sans-serif; font-size: 18px; font-weight: 700; color: #b91c1c; margin-bottom: 8px; }
+    .confirm-desc  { font-size: 13px; color: #9ca3af; margin-bottom: 24px; line-height: 1.6; }
+    .confirm-actions { display: flex; gap: 10px; }
+    .confirm-actions .btn { flex: 1; }
+
+    .spinner {
+      display: inline-block; width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      vertical-align: middle; margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .divider { border: none; border-top: 1.5px dashed #ffd6e7; margin: 4px 0 16px; }
+    .nav-links { display: flex; gap: 8px; margin-top: 8px; }
+    .nav-links .btn { flex: 1; }
   </style>
 </head>
 <body>
-<div class="card">
-  <div class="icon">🔑</div>
-  <h1>ล้างข้อมูลโหวตในอุปกรณ์นี้</h1>
-  <p>หน้านี้ใช้สำหรับล้างข้อมูลโหวต "ครูสายไหน" ออกจากอุปกรณ์นี้<br>เพื่อให้สามารถโหวตใหม่ได้อีกครั้ง</p>
 
-  <div class="status-box" id="statusBox">กำลังตรวจสอบ...</div>
-
-  <div class="success-msg" id="successMsg">✅ ล้างข้อมูลสำเร็จแล้ว! สามารถโหวตใหม่ได้แล้ว</div>
-
-  <button class="btn btn-clear" id="clearBtn">🗑️ ล้างข้อมูลโหวตครูสายไหน</button>
-  <a href="vote-type.html" class="btn btn-home" style="text-decoration:none;display:block;padding:14px;">🎯 ไปหน้าโหวตครูสายไหน</a>
-  <a href="index.html" class="btn btn-home" style="text-decoration:none;display:block;padding:14px;">🏫 กลับหน้าหลัก</a>
+<!-- ===== CONFIRM MODAL ===== -->
+<div class="overlay" id="confirmOverlay">
+  <div class="confirm-card">
+    <div class="confirm-icon">⚠️</div>
+    <div class="confirm-title">ยืนยันการล้างผลโหวต?</div>
+    <div class="confirm-desc">ผลโหวตของครูทุกคนจะถูกรีเซ็ตเป็น 0<br>และข้อมูลผู้โหวตทั้งหมดจะถูกลบออก<br><strong style="color:#b91c1c">ไม่สามารถกู้คืนได้</strong></div>
+    <div class="confirm-actions">
+      <button class="btn btn-outline" id="cancelReset" style="border-color:#e5e7eb;color:#6b7280;">ยกเลิก</button>
+      <button class="btn btn-red"     id="confirmReset">🗑️ ล้างเลย</button>
+    </div>
+  </div>
 </div>
 
-<script>
-  const KEYS = ["stylevote_done", "stylevote_teacher_id"];
+<!-- ===== MAIN CARD ===== -->
+<div class="card">
+  <div class="page-icon">🔑</div>
+  <h1>จัดการข้อมูลโหวต</h1>
+  <p class="desc">เครื่องมือสำหรับผู้ดูแลระบบ<br>ใช้รีเซ็ตอุปกรณ์หรือล้างผลโหวตทั้งหมด</p>
 
-  function checkStatus() {
-    const done = localStorage.getItem("stylevote_done");
-    const tid  = localStorage.getItem("stylevote_teacher_id");
-    const box  = document.getElementById("statusBox");
-    if (done) {
-      box.innerHTML = `สถานะ: <strong>โหวตแล้ว</strong><br>Teacher ID: <strong>${tid || "-"}</strong><br><br>กดปุ่มด้านล่างเพื่อล้างข้อมูล`;
-    } else {
-      box.innerHTML = `สถานะ: <strong style="color:#15803d">ยังไม่ได้โหวต</strong> — ไม่มีข้อมูลในอุปกรณ์นี้`;
-    }
+  <!-- ─── SECTION 1: Reset Device ─── -->
+  <div class="section section-pink">
+    <div class="section-title">📱 รีเซ็ตอุปกรณ์นี้ (Clear Vote)</div>
+    <div class="section-desc">ล้างข้อมูลโหวตของอุปกรณ์นี้เท่านั้น ให้โหวตใหม่ได้อีกครั้ง ไม่กระทบผลโหวตของครู</div>
+    <div class="status-box" id="deviceStatusBox">กำลังตรวจสอบ...</div>
+    <div class="alert alert-success" id="deviceSuccessMsg">✅ รีเซ็ตอุปกรณ์สำเร็จ! โหวตใหม่ได้แล้ว</div>
+    <div class="alert alert-error"   id="deviceErrorMsg">❌ เกิดข้อผิดพลาด กรุณาลองใหม่</div>
+    <button class="btn btn-pink" id="clearDeviceBtn">🗑️ รีเซ็ตอุปกรณ์นี้</button>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── SECTION 2: Reset All Votes ─── -->
+  <div class="section section-red">
+    <div class="section-title">🔄 รีเซ็ตผลโหวตทั้งหมด (Clear Results)</div>
+    <div class="section-desc">รีเซ็ตคะแนนโหวตของครูทุกคนเป็น 0 และล้างข้อมูลผู้โหวตทั้งหมด ทุกอุปกรณ์จะโหวตใหม่ได้</div>
+    <div class="status-box" id="globalStatusBox">กำลังโหลด...</div>
+    <div class="alert alert-success" id="globalSuccessMsg">✅ ล้างผลโหวตทั้งหมดสำเร็จ!</div>
+    <div class="alert alert-error"   id="globalErrorMsg">❌ เกิดข้อผิดพลาด กรุณาลองใหม่</div>
+    <button class="btn btn-red" id="clearAllBtn">⚠️ รีเซ็ตผลโหวตทั้งหมด</button>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ─── Nav ─── -->
+  <div class="nav-links">
+    <a href="index.html"      class="btn btn-outline">🏫 หน้าหลัก</a>
+    <a href="admin/admin.html" class="btn btn-outline">⚙️ Admin</a>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getFirestore, doc, deleteDoc, getDoc,
+  collection, getDocs, writeBatch, updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyAWWMgVV3_e1Pb1ql0aqILOHIRlFfoYj1o",
+  authDomain:        "wan-wai-kru.firebaseapp.com",
+  projectId:         "wan-wai-kru",
+  storageBucket:     "wan-wai-kru.appspot.com",
+  messagingSenderId: "1051443987649",
+  appId:             "1:1051443987649:web:1234567890abcdef",
+};
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ─── localStorage keys ───
+const KEY_DEVICE     = "wai_kru_device_id";
+const KEY_VOTED      = "wai_kru_voted";
+const KEY_STYLE_DONE = "stylevote_done";
+const KEY_STYLE_TID  = "stylevote_teacher_id";
+const KEY_STYLE_DEV  = "style_device_id";
+
+function getDeviceId() { return localStorage.getItem(KEY_DEVICE); }
+
+// ─── Spinner helper ───
+function setLoading(btn, loading, label) {
+  btn.disabled = loading;
+  btn.innerHTML = loading ? `<span class="spinner"></span>กำลังดำเนินการ...` : label;
+}
+
+// ═══════════════════════════════════════
+//  SECTION 1 — Device status & clear
+// ═══════════════════════════════════════
+async function checkDeviceStatus() {
+  const deviceId  = getDeviceId();
+  const styleDone = localStorage.getItem(KEY_STYLE_DONE);
+  const localVote = localStorage.getItem(KEY_VOTED);
+
+  let firestoreRow = "ไม่มีข้อมูล";
+  if (deviceId) {
+    try {
+      const snap = await getDoc(doc(db, "votes", deviceId));
+      firestoreRow = snap.exists()
+        ? `<strong>โหวตแล้ว</strong>`
+        : `<span class="ok">ยังไม่ได้โหวต</span>`;
+    } catch { firestoreRow = "ตรวจสอบไม่ได้"; }
+  } else {
+    firestoreRow = `<span class="ok">ยังไม่ได้โหวต</span>`;
   }
 
-  document.getElementById("clearBtn").addEventListener("click", () => {
-    KEYS.forEach(k => localStorage.removeItem(k));
-    document.getElementById("successMsg").style.display = "block";
-    document.getElementById("clearBtn").disabled = true;
-    document.getElementById("clearBtn").style.opacity = "0.5";
-    checkStatus();
-  });
+  document.getElementById("deviceStatusBox").innerHTML =
+    `ครูในดวงใจ (Firestore): ${firestoreRow}<br>` +
+    `ครูในดวงใจ (local): ${localVote ? `<strong>โหวตแล้ว</strong>` : `<span class="ok">ว่าง</span>`}<br>` +
+    `ครูสายไหน: ${styleDone ? `<strong>โหวตแล้ว</strong>` : `<span class="ok">ว่าง</span>`}`;
+}
 
-  checkStatus();
+document.getElementById("clearDeviceBtn").addEventListener("click", async () => {
+  const btn = document.getElementById("clearDeviceBtn");
+  setLoading(btn, true);
+  try {
+    const deviceId = getDeviceId();
+    if (deviceId) await deleteDoc(doc(db, "votes", deviceId)).catch(() => {});
+    [KEY_VOTED, KEY_STYLE_DONE, KEY_STYLE_TID, KEY_STYLE_DEV].forEach(k => localStorage.removeItem(k));
+    document.getElementById("deviceSuccessMsg").style.display = "block";
+    document.getElementById("deviceErrorMsg").style.display   = "none";
+    btn.innerHTML = "✅ รีเซ็ตแล้ว";
+    await checkDeviceStatus();
+  } catch {
+    document.getElementById("deviceErrorMsg").style.display = "block";
+    setLoading(btn, false, "🗑️ รีเซ็ตอุปกรณ์นี้");
+  }
+});
+
+// ═══════════════════════════════════════
+//  SECTION 2 — Global vote count & reset
+// ═══════════════════════════════════════
+async function checkGlobalStatus() {
+  try {
+    const [teachersSnap, votesSnap] = await Promise.all([
+      getDocs(collection(db, "teachers")),
+      getDocs(collection(db, "votes")),
+    ]);
+    const totalVotes = teachersSnap.docs.reduce((s, d) => s + (d.data().votes || 0), 0);
+    document.getElementById("globalStatusBox").innerHTML =
+      `ครูในระบบ: <strong>${teachersSnap.size} คน</strong><br>` +
+      `ผลโหวตรวม: <strong>${totalVotes.toLocaleString()} โหวต</strong><br>` +
+      `อุปกรณ์ที่เคยโหวต: <strong>${votesSnap.size} เครื่อง</strong>`;
+  } catch {
+    document.getElementById("globalStatusBox").textContent = "โหลดข้อมูลไม่ได้";
+  }
+}
+
+// กดปุ่ม → เปิด confirm modal
+document.getElementById("clearAllBtn").addEventListener("click", () => {
+  document.getElementById("confirmOverlay").classList.add("show");
+});
+document.getElementById("cancelReset").addEventListener("click", () => {
+  document.getElementById("confirmOverlay").classList.remove("show");
+});
+
+// ยืนยัน → reset จริง
+document.getElementById("confirmReset").addEventListener("click", async () => {
+  document.getElementById("confirmOverlay").classList.remove("show");
+  const btn = document.getElementById("clearAllBtn");
+  setLoading(btn, true);
+
+  try {
+    const [teachersSnap, votesSnap] = await Promise.all([
+      getDocs(collection(db, "teachers")),
+      getDocs(collection(db, "votes")),
+    ]);
+
+    // Batch: reset votes = 0 สำหรับครูทุกคน + ลบ votes collection
+    // Firestore batch limit = 500 ops
+    const allDocs = [
+      ...teachersSnap.docs.map(d => ({ type: "update", ref: d.ref, data: { votes: 0 } })),
+      ...votesSnap.docs.map(d  => ({ type: "delete", ref: d.ref })),
+    ];
+
+    for (let i = 0; i < allDocs.length; i += 490) {
+      const batch = writeBatch(db);
+      allDocs.slice(i, i + 490).forEach(op => {
+        if (op.type === "update") batch.update(op.ref, op.data);
+        else                       batch.delete(op.ref);
+      });
+      await batch.commit();
+    }
+
+    document.getElementById("globalSuccessMsg").style.display = "block";
+    document.getElementById("globalErrorMsg").style.display   = "none";
+    btn.innerHTML = "✅ รีเซ็ตแล้ว";
+    await checkGlobalStatus();
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById("globalErrorMsg").style.display = "block";
+    setLoading(btn, false, "⚠️ รีเซ็ตผลโหวตทั้งหมด");
+  }
+});
+
+// ─── Init ───
+checkDeviceStatus();
+checkGlobalStatus();
 </script>
 </body>
 </html>
